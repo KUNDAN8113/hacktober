@@ -1,0 +1,85 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+int cnt = 0;
+
+void PrintingChessBoard(vector<vector<int>> &ChessBoard) {
+	for (int i = 0 ; i < ChessBoard.size() ; i++) {
+		for (int j = 0 ; j < ChessBoard.size() ; j++) {
+			cout << ChessBoard[i][j] << " ";
+		}
+		cout << endl;
+	}
+	cout << endl << endl;
+}
+
+bool IsQueenSafe(vector<vector<int>> &ChessBoard , int i , int j) {
+	for (int ro = 0 ; ro < i ; ro++) {
+		for (int col = 0 ; col < ChessBoard.size() ; col++) {
+			if (ChessBoard[ro][col] != 0) {
+				if (j == col || abs(i - ro) == abs(j - col))
+					return false;
+			}
+		}
+	}
+	return true;
+
+
+
+
+	// for (int ro = i - 1 , col = j ; ro >= 0 ; ro--) {
+	// 	if (ChessBoard[ro][col] != 0)
+	// 		return false;
+	// }
+	// for (int ro = i - 1 , col = j - 1 ; i >= 0 && j >= 0 ; ro-- , col--) {
+	// 	if (ChessBoard[ro][col] != 0)
+	// 		return false;
+	// }
+	// for (int ro = i - 1 , col = j + 1 ; i >= 0 && j < ChessBoard.size() ; ro-- , col++) {
+	// 	if (ChessBoard[ro][col] != 0)
+	// 		return false;
+	// }
+	// return true;
+}
+
+
+void NQueens(vector<vector<int>> &ChessBoard , int i , int queens) {
+
+	if (queens == ChessBoard.size() + 1) {
+		PrintingChessBoard(ChessBoard);
+		cnt++;
+		//return;
+	}
+
+	for (int j = 0 ; j < ChessBoard.size() ; j++) {
+		bool safe = IsQueenSafe(ChessBoard , i , j);
+		if (safe == true) {
+			ChessBoard[i][j] = queens;
+			NQueens(ChessBoard , i + 1 , queens + 1);
+			ChessBoard[i][j] = 0;
+		}
+
+	}
+}
+
+int main() {
+// #ifndef ONLINE_JUDGE
+// 	freopen("input.txt" , "r" , stdin);
+// 	freopen("output.txt" , "w" , stdout);
+// #endif
+
+
+	int n;
+	cin >> n;
+	vector<vector<int>> ChessBoard(n , vector<int> (n));
+
+	int queens = 1;
+
+
+	NQueens(ChessBoard , 0 , queens);
+	cout << cnt << endl;
+
+
+	return 0;
+}
